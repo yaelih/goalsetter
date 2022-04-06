@@ -40,16 +40,11 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
-    // if (!email || !password) {
-    //     res.status(400)
-    //     throw new Error('Please enter email and password')
-    // }
 
     // check for user email
     const user = await User.findOne({ email })
 
     if (user && (await bcrypt.compare(password, user.password))) {
-        // res.status(200).json({
         res.json({
             _id: user.id,
             name: user.name,
@@ -63,8 +58,7 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const getMe = asyncHandler(async (req, res) => {
-    const { _id, name, email } = await User.findById(req.user.id)
-    res.status(200).json({id: _id, name, email})
+    res.status(200).json(req.user)
 })
 
 const generateToekn = (id) => {
